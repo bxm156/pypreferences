@@ -28,7 +28,6 @@ class FileManager(BaseManager):
     def get(self, key):
         with open(self.path, 'rb') as input:
             data = pickle.load(input)
-            print data
             return data[key]
 
     def length(self):
@@ -36,13 +35,15 @@ class FileManager(BaseManager):
             data = pickle.load(input)
             return len(data)
 
-    def create(self):
+
+    def create(self, ignore_already_exists=False):
         if not self.exists():
             data = {}
             with open(self.path, 'wb') as out:
                 pickle.dump(data, out)
         else:
-            raise Exception
+            if not ignore_already_exists:
+                raise Exception
 
     def reset(self):
         if self.exists():

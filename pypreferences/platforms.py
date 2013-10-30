@@ -1,5 +1,5 @@
 import platform
-from types import enum
+from custom_types import enum
 from managers.mac_manager import MacManager
 
 PlatformEnum = enum(
@@ -8,7 +8,7 @@ PlatformEnum = enum(
     'Linux',
 )
 
-platforms = []
+platforms = {}
 
 
 class PlatformMeta(type):
@@ -19,7 +19,7 @@ class PlatformMeta(type):
         if cls.platform is None:
             return
 
-        platforms.setdefault(cls.platform, []).append(cls)
+        platforms[cls.platform] = cls
 
 
 class Platform(object):
@@ -27,7 +27,7 @@ class Platform(object):
     platform = None
 
     @staticmethod
-    def is_current_platform(os_string):
+    def is_current_platform():
         return False
 
     @staticmethod
@@ -39,15 +39,15 @@ class Windows(Platform):
     platform = PlatformEnum.Windows
 
     @staticmethod
-    def is_current_platform(os_string):
+    def is_current_platform():
         return "Windows" in platform.system()
 
 
 class Macintosh(Platform):
-    platform = platform.Macintosh
+    platform = PlatformEnum.Macintosh
 
     @staticmethod
-    def is_current_platform(os_string):
+    def is_current_platform():
         return "Darwin" in platform.system()
 
     @staticmethod
@@ -59,5 +59,5 @@ class Linux(Platform):
     platform = PlatformEnum.Linux
 
     @staticmethod
-    def is_current_platform(os_string):
+    def is_current_platform():
         return "Linux" in platform.system()

@@ -18,6 +18,5 @@ class MacManager(FileManager):
         self.mkdirs_p(path)
         filename = "com.bmarty.pypreferences.%s.pref" % namespace
         path = os.path.join(path, filename)
-        print path
         return path
 
